@@ -6,6 +6,8 @@ const clearAll = document.querySelector(".clear")
 
 const messageSpan = document.querySelector(".message-box span")
 
+const searchForm = document.querySelector(".search")
+
 function updateMessage(){
     const taskLength = tasks.children.length;
     messageSpan.textContent = `you have ${taskLength} pending length`;
@@ -45,4 +47,39 @@ clearAll.addEventListener("click", event =>{
         item.remove();
         updateMessage();
     })
+})
+
+// searching
+function filterTask(term){
+    Array.from(tasks.children)
+    .filter(task =>{
+        return !task.textContent.includes(term);
+    })
+    .forEach(task =>{
+        task.classList.add("hide");
+    })
+
+    Array.from(tasks.children)
+    .filter(task =>{
+        return task.textContent.includes(term);
+    })
+    .forEach(task =>{
+        task.classList.remove("hide");
+    })
+
+    
+}
+
+
+searchForm.addEventListener("keyup", event => {
+    const term = searchForm.task.value.trim();
+    filterTask(term);
+});
+
+searchForm.addEventListener("click", event =>{
+    if(event.target.classList.contains("reset")){
+        searchForm.reset();
+        const term = searchForm.task.value.trim();
+        filterTask(term);
+    }
 })
